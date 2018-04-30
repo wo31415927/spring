@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration status="OFF">
+    <appenders>
+        <!-- 输出控制台日志的配置 -->
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout
+                    pattern="[%t][%d{yyyy-MM-dd HH:mm:ss}] %-5level %class{36} %L %M - %msg%xEx%n"/>
+        </Console>
+
+        <!--druid的日志记录追加器-->
+        <RollingRandomAccessFile name="druidSqlRollingRandomAccessFile" fileName="./logs/druid.log"
+                                 filePattern="logs/$${date:yyyy-MM}/api-%d{yyyy-MM-dd}-%i.log.gz">
+            <PatternLayout pattern="[%d{yyyy-MM-dd HH:mm:ss}] %-5level %L %M - %msg%xEx%n"/>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="500 MB"/>
+                <TimeBasedTriggeringPolicy/>
+            </Policies>
+            <DefaultRolloverStrategy max="10"/>
+        </RollingRandomAccessFile>
+    </appenders>
+
+    <loggers>
+        <asyncRoot level="INFO" includeLocation="true">
+            <appender-ref ref="Console"/>
+        </asyncRoot>
+
+        <!--记录druid-sql的记录-->
+        <asynclogger name="druid.sql.DataSource" level="info" additivity="false">
+            <appender-ref ref="druidSqlRollingRandomAccessFile"/>
+        </asynclogger>
+        <asyncLogger name="druid.sql.Connection" level="info" additivity="false">
+            <appender-ref ref="druidSqlRollingRandomAccessFile"/>
+        </asyncLogger>
+        <asyncLogger name="druid.sql.Statement" level="info" additivity="false">
+            <appender-ref ref="druidSqlRollingRandomAccessFile"/>
+        </asyncLogger>
+        <asyncLogger name="druid.sql.ResultSet" level="info" additivity="false">
+            <appender-ref ref="druidSqlRollingRandomAccessFile"/>
+        </asyncLogger>
+
+        <!--log4j2 自带过滤日志-->
+        <asyncLogger name="org.apache.catalina.startup.DigesterFactory" level="error"/>
+        <asyncLogger name="org.apache.catalina.util.LifecycleBase" level="error"/>
+        <asyncLogger name="org.apache.coyote.http11.Http11NioProtocol" level="warn"/>
+        <asyncLogger name="org.apache.sshd.common.util.SecurityUtils" level="warn"/>
+        <asyncLogger name="org.apache.tomcat.util.net.NioSelectorPool" level="warn"/>
+        <asyncLogger name="org.crsh.plugin" level="warn"/>
+        <asyncLogger name="org.crsh.ssh" level="warn"/>
+        <asyncLogger name="org.eclipse.jetty.util.component.AbstractLifeCycle" level="error"/>
+        <asyncLogger name="org.hibernate.validator.internal.util.Version" level="warn"/>
+        <asyncLogger name="org.springframework.boot.actuate.autoconfigure.CrshAutoConfiguration"
+                     level="warn"/>
+        <asyncLogger name="org.springframework.boot.actuate.endpoint.jmx" level="warn"/>
+        <asyncLogger name="org.thymeleaf" level="warn"/>
+    </loggers>
+</configuration>
