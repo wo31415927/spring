@@ -8,11 +8,22 @@
         </Console>
 
         <!--druid的日志记录追加器-->
+        <RollingRandomAccessFile name="File" fileName="./logs/console.log"
+                                 filePattern="logs/$${date:yyyy-MM}/api-%d{yyyy-MM-dd}-%i.log.gz">
+            <PatternLayout pattern="[%d{yyyy-MM-dd HH:mm:ss}] %-5level %L %M - %msg%xEx%n"/>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="256 MB"/>
+                <TimeBasedTriggeringPolicy/>
+            </Policies>
+            <DefaultRolloverStrategy max="10"/>
+        </RollingRandomAccessFile>
+
+        <!--druid的日志记录追加器-->
         <RollingRandomAccessFile name="druidSqlRollingRandomAccessFile" fileName="./logs/druid.log"
                                  filePattern="logs/$${date:yyyy-MM}/api-%d{yyyy-MM-dd}-%i.log.gz">
             <PatternLayout pattern="[%d{yyyy-MM-dd HH:mm:ss}] %-5level %L %M - %msg%xEx%n"/>
             <Policies>
-                <SizeBasedTriggeringPolicy size="500 MB"/>
+                <SizeBasedTriggeringPolicy size="256 MB"/>
                 <TimeBasedTriggeringPolicy/>
             </Policies>
             <DefaultRolloverStrategy max="10"/>
@@ -22,6 +33,7 @@
     <loggers>
         <asyncRoot level="INFO" includeLocation="true">
             <appender-ref ref="Console"/>
+            <appender-ref ref="File"/>
         </asyncRoot>
 
         <!--记录druid-sql的记录-->

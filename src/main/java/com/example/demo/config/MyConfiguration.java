@@ -18,9 +18,10 @@ public class MyConfiguration {
    */
   //  @Autowired private MyProp myProp;
   @Autowired private ApplicationContext applicationContext;
+  @Autowired protected User user;
 
   /**
-   * 显式声明注入User对象user4
+   * 显式声明注入User对象user0
    * @param user1
    * @return
    */
@@ -39,17 +40,5 @@ public class MyConfiguration {
   public User user1(MyProp myProp) {
     System.out.println(myProp);
     return new User(1);
-  }
-
-
-
-  @Bean
-  public User user2(User user0) {
-    return new User();
-  }
-
-  @Bean
-  public User user3(User user2) {
-    return new User();
   }
 }
